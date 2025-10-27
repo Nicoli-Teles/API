@@ -1,0 +1,35 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main   # ou a branch que você usa para deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/setup-azure-cli@v1
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
+      - name: Build the application (caso necessário)
+        run: |
+          # Adicione comandos para compilar o projeto, se necessário
+          # Exemplo: npm install e npm run build (se for Node.js)
+          # Ou: dotnet build (para .NET)
+          
+      - name: Deploy to Azure
+        run: |
+          # Substitua pelo comando adequado para o seu serviço. Exemplo para Azure App Service:
+          az webapp deploy --resource-group <seu-grupo-de-recursos> --name <nome-do-seu-app-service> --src-path ./caminho/do/seu/artefato
